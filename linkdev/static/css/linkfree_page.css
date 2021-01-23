@@ -1,0 +1,92 @@
+/*Importando fonte*/
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+/*Reset*/
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+body{
+    padding: 30px;
+    color: #fff;
+    background-color: #040404;
+}
+
+/* Centralizar conteúdo */
+
+html {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/*Header*/
+header{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin-bottom: 1rem;
+}
+
+
+
+header img{
+    height: 125px;
+    width: 125px;
+    border-radius: 50%;
+    margin-bottom: 30px;    
+}
+header p{
+    font-size: 120%;
+    color: #c0c0c0;
+}
+header a{
+    font-size: 120%;
+    color: #c0c0c0;
+}
+/*Section*/
+section article{
+    display: flex;
+    justify-items: center;
+    flex-wrap: wrap;
+    max-width: 600px;
+    margin: 0 auto;
+}
+section article a{
+    text-decoration: none;
+    flex-basis: 200px;
+    justify-content: space-between;
+    flex-grow: 1;
+    margin: 20px;
+}
+section article form{
+    text-decoration: none;
+    flex-basis: 200px;
+    justify-content: space-between;
+    flex-grow: 1;
+    margin: 20px;
+}
+section article div{
+    min-height: 100px;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+section article div:hover{
+    border: 3px solid #fff;
+}
+section article div img{
+    width: 25px;
+    margin-bottom: 10px;
+}
+section article div h3{
+    text-align: center;
+    line-height: 23px;
+    font-weight: 400;
+    font-size: 16px;
+    color: #fff;
+}

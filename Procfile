@@ -1,0 +1,1 @@
+web: gunicorn linkdev.wsgi

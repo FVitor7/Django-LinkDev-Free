@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/linkfree_page.css' %}" />
+    <title>LinkDev | {{ username }}</title>
+</head>
+
+<body>
+    <main>
+        <header>
+            <img src="https://www.pesmaster.com/pes-2021/graphics/players/player_0.png" alt="Foto Pesmaster">
+            <h1 id="user_name">@{{ username }}</h1>
+            <a href="https://github.com/FVitor7"><h5>By: Fábio Vitor</h5></a>
+            
+        </header>
+        <section>
+            <form action="click_count" method="post"> {% csrf_token %}
+            <article id="content_user">
+                
+            </article>
+            </form>
+        </section>
+    </main>
+    {% load static %}
+    <script src="{% static 'js/linkfree_page.js' %}"></script>   
+</body>
+
+</html>
