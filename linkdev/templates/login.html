@@ -36,7 +36,12 @@
 					<div class="card fat">
 						<div class="card-body">
 							<h4 class="card-title">Login</h4>
-							
+							<div class="mt-4 text-center">
+									{% for message in messages %}
+										{{ message }}
+										
+										{% endfor %}
+							</div>
 							<form id="login" class="my-login-validation" action="submit" method="POST">{% csrf_token %}
 								<div class="form-group">
 									<input id="username" type="text" placeholder="Usuário" class="form-control" name="username" value="" required autofocus>
@@ -73,15 +78,7 @@
 								<div class="mt-4 text-center">
 									Você não tem uma conta? <a href="/register/">Cadastre-se
 								</div>
-							</form>
-							 
-								<div class="mt-4 text-center">
-									{% for message in messages %}
-										{{ message }}
-										
-										{% endfor %}
-									</div>
-									
+							</form>						
 						</div>
 					</div>
 				</div>
