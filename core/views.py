@@ -69,7 +69,7 @@ def submit_login(request):
             login(request, user)
             return redirect('/')
         else:
-            messages.error(request, "Usuário ou senha invalido!")
+            messages.error(request, "Usuário ou senha incorretos")
     return redirect('/')
 
 
