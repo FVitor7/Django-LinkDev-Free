@@ -42,6 +42,7 @@
 										
 										{% endfor %}
 							</div>
+							<br>
 							<form id="login" class="my-login-validation" action="submit" method="POST">{% csrf_token %}
 								<div class="form-group">
 									<input id="username" type="text" placeholder="Usuário" class="form-control" name="username" value="" required autofocus>
