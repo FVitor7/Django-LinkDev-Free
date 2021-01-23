@@ -64,12 +64,20 @@ def submit_login(request):
     if request.POST:
         username = request.POST.get('username')
         password = request.POST.get('password')
+        def verify_user_login():
+            if User.objects.filter(username=username).exists() == False:
+                    messages.error(
+                        request, "O nome de usuário inserido não pertence a uma conta. Verifique seu nome de usuário e tente novamente.")
+                    return
+            else:
+                pass
+        verify_user_login()
         user = authenticate(username=username, password=password)
         if user is not None:
             login(request, user)
             return redirect('/')
         else:
-            messages.error(request, "Usuário ou senha incorretos")
+            messages.error(request, "Sua senha está incorreta. Confira-a.")
     return redirect('/')
 
 
