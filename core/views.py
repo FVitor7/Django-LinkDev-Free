@@ -111,7 +111,7 @@ def submit_register(request):
         login(request, user)
         return redirect('/')
     else:
-        messages.error(request, "Erro ao cadastrar usuário! Tente novamente.")
+        messages.error(request, "Tente novamente.")
 
     return redirect('/register/')
 
