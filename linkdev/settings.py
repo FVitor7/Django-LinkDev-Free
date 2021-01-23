@@ -25,7 +25,7 @@ PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 SECRET_KEY = "-e3e1b1jj6fu2ubvhz#o+!=b^4$3hq@x6ze-lsntg^kr%4e35j"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 '''
 import logging
