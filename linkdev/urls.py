@@ -22,21 +22,34 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
+    # admin
     path('admin/', admin.site.urls),
-    path('links/', views.list_links),
+
+    # api
+    path('api/', RedirectView.as_view(url='/api/v1/')),
     path('api/v1/', include('core.urls')),
-    path('linkfree/<username>/', views.template_user),
-    path('linkfree/<username>/redirect/<int:id_link>/', views.redirect_url),
+
+    # home-page
+    path('', RedirectView.as_view(url='/links/')),
+
+    # login
+    path('login/', views.login_user),
+    path('login/submit', views.submit_login),
+
+    # logout
+    path('logout/', views.logout_user),
+
+    # register-User
+    path('register/', views.register_user),
+
+    # links-page
+    path('links/', views.list_links),
     path('links/new/', views.new_link),
     path('links/new/submit', views.submit_link),
     path('links/new/delete/<int:id_link>/', views.delete_link),
-    path('', RedirectView.as_view(url='/links/')),
-    path('api/', RedirectView.as_view(url='/api/v1/')),
-    path('login/', views.login_user),
-    path('register/', views.register_user),
-    path('login/submit', views.submit_login),
-    path('register/submit_register', views.submit_register),
-    path('logout/', views.logout_user)
 
+    # page-preview
+    path('linkfree/<username>/', views.template_user),
+    path('linkfree/<username>/redirect/<int:id_link>/', views.redirect_url),
 
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

@@ -8,6 +8,8 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import viewsets
 from .serializers import LinkSerializer
+from django.contrib.auth.forms import AuthenticationForm
+from .forms import SignUpForm
 from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
 from django.http import (HttpResponseRedirect,
@@ -35,7 +37,6 @@ class LinkViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
 
-        #queryset = Link.objects.all()
         queryset = []
 
         username = self.request.query_params.get('username')
@@ -51,90 +52,75 @@ def login_user(request):
     return render(request, 'login.html')
 
 
-def register_user(request):
-    return render(request, 'register.html')
-
-
 def logout_user(request):
     logout(request)
     return redirect('/')
 
 
 def submit_login(request):
-    if request.POST:
+    if request.method == 'POST':
+
         username = request.POST.get('username')
         password = request.POST.get('password')
 
-        def verify_user_login():
-            if not User.objects.filter(username=username).exists():
-                messages.error(
-                    request, "O nome de usuário inserido não pertence a uma conta. Verifique seu nome de usuário e tente novamente.")
-                return
-            else:
-                user = authenticate(username=username, password=password)
-                if user is not None:
-                    return user
-                else:
-                    messages.error(
-                        request, "Sua senha está incorreta. Confira-a.")
-                    return
-
-        #user = authenticate(username=username, password=password)
-        # verify_user_login()
-        if verify_user_login() is not None:
-            login(request, verify_user_login())
+        if not User.objects.filter(username=username).exists():
+            messages.error(
+                request, "O nome de usuário inserido não pertence a uma conta. \
+                    Verifique seu nome de usuário e tente novamente.")
             return redirect('/')
 
-    return redirect('/')
+        user = authenticate(request, username=username, password=password)
 
-
-def submit_register(request):
-    if request.POST:
-        username = request.POST.get('username')
-        email = request.POST.get('email')
-        password = request.POST.get('password')
-        password2 = request.POST.get('password2')
-
-        def verify_user_register():
-            if password == password2:
-                if len(username) < 4:
-                    messages.error(
-                        request, "Nome de usuário muito pequeno!")
-                    return
-                if User.objects.filter(username=username).exists() == True:
-                    messages.error(
-                        request, "Nome de usuário não disponível!")
-                    return
-                else:
-                    if User.objects.filter(email=email).exists() == True:
-                        messages.error(request, "E-mail não disponível!")
-                        return
-                    else:
-                        try:
-                            validate_email(email)
-                        except ValidationError as e:
-                            messages.error(request, "E-mail inválido!")
-
-                        return User.objects.create_user(username, email, password)
-
-            else:
-                messages.error(
-                    request, "Senhas inválidas")
-
-        verify_user_register()
-        user = authenticate(username=username, password=password)
         if user is not None:
             login(request, user)
             return redirect('/')
+        else:
+            messages.error(
+                request, "Sua senha está incorreta. Confira-a.")
 
-    return redirect('/register/')
+    form = AuthenticationForm()
+
+    return render(request, 'login.html', {'form': form})
+
+
+def register_user(request):
+    if request.user.is_authenticated:
+        return redirect('/')
+
+    form = SignUpForm()
+
+    if request.method == "POST":
+        form = SignUpForm(request.POST)
+
+        if form.is_valid():
+
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password1')
+
+            form.save()
+
+            user = authenticate(username=username, password=password)
+
+            login(request, user)
+            return redirect('/')
+        else:
+            messages.error(request, 'Corrija os erros abaixo:')
+
+    else:
+        form = SignUpForm()
+
+    return render(request, 'register.html', {'form': form})
+
+
+@login_required
+def dashboard_view(request):
+    return render(request, 'app/dashboard.html')
 
 
 @login_required(login_url='/login/')
 def list_links(request):
     user = request.user
     link = Link.objects.filter(user=user)
-    #link = Link.objects.all()
     data = {'links': link}
     return render(request, 'links.html', data)
 
@@ -169,7 +155,8 @@ def submit_link(request):
 
         else:
             Link.objects.create(title=title, url=url,
-                                description=description, user=user, background_color=background_color)
+                                description=description, user=user,
+                                background_color=background_color)
 
     return redirect('/')
 
