@@ -124,6 +124,8 @@ Agradecemos às seguintes pessoas que contribuíram para este projeto:
   </tr>
 </table>
 
+Créditos pela página de preview: [Iuricode](https://github.com/iuricode).
+
 
 ## 😄 Seja um dos contribuidores<br>
 
