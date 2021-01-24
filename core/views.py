@@ -64,20 +64,27 @@ def submit_login(request):
     if request.POST:
         username = request.POST.get('username')
         password = request.POST.get('password')
+
         def verify_user_login():
-            if User.objects.filter(username=username).exists() == False:
-                    messages.error(
-                        request, "O nome de usuário inserido não pertence a uma conta. Verifique seu nome de usuário e tente novamente.")
-                    return
+            if not User.objects.filter(username=username).exists():
+                messages.error(
+                    request, "O nome de usuário inserido não pertence a uma conta. Verifique seu nome de usuário e tente novamente.")
+                return
             else:
-                pass
-        verify_user_login()
-        user = authenticate(username=username, password=password)
-        if user is not None:
-            login(request, user)
+                user = authenticate(username=username, password=password)
+                if user is not None:
+                    return user
+                else:
+                    messages.error(
+                        request, "Sua senha está incorreta. Confira-a.")
+                    return
+
+        #user = authenticate(username=username, password=password)
+        # verify_user_login()
+        if verify_user_login() is not None:
+            login(request, verify_user_login())
             return redirect('/')
-        else:
-            messages.error(request, "Sua senha está incorreta. Confira-a.")
+
     return redirect('/')
 
 
@@ -88,38 +95,37 @@ def submit_register(request):
         password = request.POST.get('password')
         password2 = request.POST.get('password2')
 
-    def verify_user_register():
-        if password == password2:
-            if len(username) < 4:
-                messages.error(
-                    request, "Nome de usuário muito pequeno!")
-                return
-            if User.objects.filter(username=username).exists() == True:
-                messages.error(
-                    request, "Nome de usuário não disponível!")
-                return
-            else:
-                if User.objects.filter(email=email).exists() == True:
-                    messages.error(request, "E-mail não disponível!")
+        def verify_user_register():
+            if password == password2:
+                if len(username) < 4:
+                    messages.error(
+                        request, "Nome de usuário muito pequeno!")
+                    return
+                if User.objects.filter(username=username).exists() == True:
+                    messages.error(
+                        request, "Nome de usuário não disponível!")
                     return
                 else:
-                    try:
-                        validate_email(email)
-                    except ValidationError as e:
-                        messages.error(request, "E-mail inválido!")
-                    user = User.objects.create_user(username, email, password)
+                    if User.objects.filter(email=email).exists() == True:
+                        messages.error(request, "E-mail não disponível!")
+                        return
+                    else:
+                        try:
+                            validate_email(email)
+                        except ValidationError as e:
+                            messages.error(request, "E-mail inválido!")
 
-        else:
-            messages.error(
-                request, "Senhas inválidas")
+                        return User.objects.create_user(username, email, password)
 
-    verify_user_register()
-    user = authenticate(username=username, password=password)
-    if user is not None:
-        login(request, user)
-        return redirect('/')
-    else:
-        messages.error(request, "Tente novamente.")
+            else:
+                messages.error(
+                    request, "Senhas inválidas")
+
+        verify_user_register()
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('/')
 
     return redirect('/register/')
 
