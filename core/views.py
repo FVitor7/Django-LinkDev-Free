@@ -87,8 +87,6 @@ def register_user(request):
     if request.user.is_authenticated:
         return redirect('/')
 
-    form = SignUpForm()
-
     if request.method == "POST":
         form = SignUpForm(request.POST)
 
@@ -100,7 +98,7 @@ def register_user(request):
             form.save()
 
             return redirect('/')
-            
+
         else:
             messages.error(request, 'Corrija os erros abaixo:')
 
