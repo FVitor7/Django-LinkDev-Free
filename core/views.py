@@ -97,8 +97,10 @@ def register_user(request):
 
             form.save()
 
-            return redirect('/')
+            user = authenticate(username=username, password=password)
 
+            login(request, user)
+            return redirect('/')
         else:
             messages.error(request, 'Corrija os erros abaixo:')
 
