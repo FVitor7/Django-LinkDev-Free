@@ -97,10 +97,9 @@ TEMPLATES = [
 WSGI_APPLICATION = 'linkdev.wsgi.application'
 
 REST_FRAMEWORK = {
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 20
+  
+    
 }
-
 
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases

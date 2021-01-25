@@ -4,9 +4,10 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.http.response import Http404
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework import viewsets
+from rest_framework.views import APIView
 from .serializers import LinkSerializer
 from django.contrib.auth.forms import AuthenticationForm
 from .forms import SignUpForm
@@ -30,13 +31,13 @@ def home_api(request, format=None):
 
 
 class LinkViewSet(viewsets.ModelViewSet):
+
+    http_method_names = ['get']
     lookup_field = 'id'
     serializer_class = LinkSerializer
-
     pagination_class = None
 
     def get_queryset(self):
-
         queryset = []
 
         username = self.request.query_params.get('username')
@@ -44,8 +45,7 @@ class LinkViewSet(viewsets.ModelViewSet):
         if username is not None:
             user = User.objects.get(username__iexact=username)
             queryset = Link.objects.filter(user=user).all()
-
-        return queryset
+            return queryset
 
 
 def login_user(request):
