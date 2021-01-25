@@ -42,7 +42,7 @@ class LinkViewSet(viewsets.ModelViewSet):
         username = self.request.query_params.get('username')
 
         if username is not None:
-            user = User.objects.get(username=username)
+            user = User.objects.get(username__iexact=username)
             queryset = Link.objects.filter(user=user).all()
 
         return queryset
