@@ -63,13 +63,15 @@ def submit_login(request):
         username = request.POST.get('username')
         password = request.POST.get('password')
 
-        if not User.objects.filter(username=username).exists():
+        try:
+            temp_user = User.objects.get(username__iexact=username)
+        except User.DoesNotExist:
             messages.error(
                 request, "O nome de usuário inserido não pertence a uma conta. \
                     Verifique seu nome de usuário e tente novamente.")
             return redirect('/')
 
-        user = authenticate(request, username=username, password=password)
+        user = authenticate(request, username=temp_user, password=password)
 
         if user is not None:
             login(request, user)

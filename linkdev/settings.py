@@ -46,6 +46,7 @@ LOGGING = {
 }
 '''
 
+
 # Application definition
 
 INSTALLED_APPS = [
