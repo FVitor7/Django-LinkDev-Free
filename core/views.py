@@ -191,7 +191,8 @@ def redirect_url(request, username, id_link):
 
     except Exception:
         raise Http404()   
-        
-    link.id_link = F('id_link') + 1
+       
+    #link.save(update_fields=['id_link'])
+    link.update(id_link=F('id_link') + 1)
     
     return HttpResponsePermanentRedirect(link.url)
