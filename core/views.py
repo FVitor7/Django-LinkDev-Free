@@ -18,6 +18,7 @@ from django.http import (HttpResponseRedirect,
                          HttpResponsePermanentRedirect)
 
 from django.contrib.auth.models import User
+from django.db.models import F
 
 
 # Create your views here.
@@ -186,12 +187,8 @@ def template_user(request, username):
 
 def redirect_url(request, username, id_link):
     try:
-        link = Link.objects.get(id=id_link)
+        link = Link.objects.get(id=id_link).update(id_link=F('id_link') + 1)
+        return HttpResponsePermanentRedirect(link.url)
 
     except Exception:
         raise Http404()
-
-    link.clicks_count += 1
-    link.save()
-
-    return HttpResponsePermanentRedirect(link.url)
