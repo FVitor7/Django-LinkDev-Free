@@ -187,8 +187,11 @@ def template_user(request, username):
 
 def redirect_url(request, username, id_link):
     try:
-        link = Link.objects.get(id=id_link).update(id_link=F('id_link') + 1)
-        return HttpResponsePermanentRedirect(link.url)
+        link = Link.objects.get(id=id_link)
 
     except Exception:
-        raise Http404()
+        raise Http404()   
+        
+    link.id_link = F('id_link') + 1
+    
+    return HttpResponsePermanentRedirect(link.url)
