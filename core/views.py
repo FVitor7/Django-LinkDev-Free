@@ -192,8 +192,8 @@ def redirect_url(request, username, id_link):
     except Exception:
         raise Http404()   
        
-    link.clicks_count += 1
+    #link.clicks_count += 1
+    link.clicks_count = F('clicks_count') + 1
     link.save(update_fields=['clicks_count'])
-    #link.update(id_link=F('id_link') + 1)
     
     return HttpResponsePermanentRedirect(link.url)
